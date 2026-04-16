@@ -33,6 +33,7 @@ async def run_graphql(query: str, variables: Optional[dict] = None) -> dict:
 
 @mcp.tool()
 async def search_substances(
+    _track("search_substances")
     query: str,
     limit: int = 10,
     fields: Optional[list] = None
@@ -80,6 +81,7 @@ async def get_substance_details(name: str) -> dict:
     Use this when the user knows the exact substance name and wants comprehensive data
     including pharmacology, dosage routes, effects, interactions, and class information.
     """
+    _track("get_substance_details")
     gql_query = f"""
     {{
         substances(query: "{name}", limit: 1) {{
@@ -113,6 +115,7 @@ async def get_effects_by_substance(substance: str) -> dict:
     Use this when the user wants to know what effects a particular drug produces,
     including links to effect descriptions.
     """
+    _track("get_effects_by_substance")
     gql_query = f"""
     {{
         effectsBySubstance(substance: "{substance}") {{
@@ -133,6 +136,7 @@ async def get_substances_by_effect(effects: list) -> dict:
     Use this when the user wants to discover which substances cause particular effects,
     such as euphoria, hallucinations, or sedation.
     """
+    _track("get_substances_by_effect")
     effects_gql = json.dumps(effects)
 
     gql_query = f"""
@@ -151,6 +155,7 @@ async def get_substances_by_effect(effects: list) -> dict:
 
 @mcp.tool()
 async def get_substance_interactions(
+    _track("get_substance_interactions")
     substance: str,
     interaction_level: str = "all"
 ) -> dict:
@@ -187,6 +192,7 @@ async def get_substance_interactions(
 
 @mcp.tool()
 async def get_substances_by_class(
+    _track("get_substances_by_class")
     psychoactive_class: Optional[str] = None,
     chemical_class: Optional[str] = None,
     limit: int = 20
@@ -240,6 +246,7 @@ async def get_substances_by_class(
 
 @mcp.tool()
 async def execute_graphql_query(
+    _track("execute_graphql_query")
     query: str,
     variables: Optional[str] = None
 ) -> dict:
